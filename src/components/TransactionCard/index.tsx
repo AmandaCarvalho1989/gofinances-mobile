@@ -1,6 +1,4 @@
 import React from "react";
-import { View } from "react-native";
-
 import {
   Container,
   Title,
@@ -12,17 +10,35 @@ import {
   Date,
 } from "./styles";
 
-export const TransactionCard: React.FC = () => {
+interface Category {
+  name: string;
+  icon: string;
+}
+export interface Transaction {
+  title: string;
+  type: "positive" | "negative";
+  amount: string;
+  category: Category;
+  date: string;
+}
+interface TransactionCard {
+  data: Transaction;
+}
+
+export const TransactionCard: React.FC<TransactionCard> = ({ data }) => {
   return (
     <Container>
-      <Title>Desenvolvimento de site</Title>
-      <Amount> R$ 12.000,00 </Amount>
+      <Title>{data.title}</Title>
+      <Amount type={data.type}>
+        {data.type === "negative" && "- "}
+        {data.amount}
+      </Amount>
       <Footer>
         <Category>
-          <Icon name="dollar-sign" />
-          <CategoryName>Vendas</CategoryName>
+          <Icon name={data.category.icon} />
+          <CategoryName>{data.category.name}</CategoryName>
         </Category>
-        <Date>13/04/2020</Date>
+        <Date>{data.date}</Date>
       </Footer>
     </Container>
   );
